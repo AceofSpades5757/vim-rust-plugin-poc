@@ -28,7 +28,9 @@ def build() -> None:
         raise RuntimeError("Unable to build Rust plugin.")
 
 
-build()
+if not binary.exists():
+    build()
+assert binary.exists(), "Binary was not created."
 EOF
 
 let s:binary = py3eval('str(binary)')
