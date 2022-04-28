@@ -2,6 +2,10 @@
 
 Proof of concept: Create a Vim plugin in Rust.
 
+If run correctly, the plugin will set the following in Vim.
+
+`let g:rust_plugin = "Hello Vim!"`
+
 # Usage
 
 ## Requirements
