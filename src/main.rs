@@ -37,6 +37,7 @@ fn main() {
 ///
 /// Set a global variable
 fn plugin(mut stream: &TcpStream) {
+    /*
     use vii::channel::ChannelCommand;
     use vii::channel::ExCommand;
 
@@ -48,6 +49,12 @@ fn plugin(mut stream: &TcpStream) {
     let command: String = format!(r#"let g:{variable} = '{value}'"#);
     let ex = ChannelCommand::Ex(ExCommand { command });
     let channel_command = ex.to_string();
+    */
+
+    // HARD-CODED
+    // FIX: Hard coding to replicate earlier results
+    let channel_command = r#"["ex", "let g:rust_plugin = 'Hello Vim!'"]"#;
+
     log::info!("Sending Command: {:?}", channel_command);
     stream.write(channel_command.as_bytes()).unwrap();
     stream.flush().unwrap();
