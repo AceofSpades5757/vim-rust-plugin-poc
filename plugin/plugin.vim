@@ -1,6 +1,6 @@
 " Plugin:      Rust Vim Plugin POC
 " Author:      Kyle L. Davis <AceofSpades5757.github@gmail.com>
-" Version:     0.0.1
+" Version:     0.0.4
 " Modified:    2022 Apr 28
 " Description:
 "
@@ -15,7 +15,7 @@ import subprocess
 from pathlib import Path
 
 
-plugin_directory: Path = Path(vim.eval('expand("<sfile>")')).absolute().parent
+plugin_directory: Path = Path(vim.eval('expand("<sfile>")')).absolute().parent.parent
 binary: Path = plugin_directory / 'target/release/vim-plugin.exe'
 
 
