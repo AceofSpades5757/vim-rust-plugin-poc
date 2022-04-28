@@ -7,9 +7,6 @@
 "     Vim plugin written in Rust.
 "
 
-if exists("g:loaded_vim_rust_plugin")
-    finish
-endif
 let g:loaded_vim_rust_plugin = 1
 
 
@@ -23,10 +20,10 @@ binary: Path = plugin_directory / 'target/release/vim-plugin.exe'
 
 
 def build() -> None:
-    process = subprocess.run([
+    process = subprocess.run(
         'cargo build --release'.split(),
         cwd=plugin_directory,
-    ])
+    )
     if process.returncode != 0:
         raise RuntimeError("Unable to build Rust plugin.")
 
@@ -34,7 +31,7 @@ def build() -> None:
 build()
 EOF
 
-let s:binary = py3eval('binary')
+let s:binary = py3eval('str(binary)')
 
 " PLUGIN STYLE
 "
@@ -45,8 +42,8 @@ let s:binary = py3eval('binary')
 "
 
 " Config
-let s:max_startup_time = 10
-let s:max_work_time = 10
+let s:max_startup_time = 5
+let s:max_work_time = 5
 
 
 " 1. Start Server
@@ -54,7 +51,7 @@ if !exists('job_id')
     let s:job_id = 0
     let s:job_options = {}
 endif
-let s:job = job_start([s:binary], job_options)
+let s:job = job_start([s:binary], s:job_options)
 
 " 2. Connect to Server
 " Needs time to wait for server startup
@@ -67,14 +64,14 @@ let s:count_ = 0
 while ch_status(s:channel) == "fail"
 
     " Waiting to Connect
-    if s:count_ >= max_startup_time
+    if s:count_ >= s:max_startup_time
         break
     endif
     let s:count_ += 1
     sleep 1
 
     " Try Again
-    let s:channel = ch_open(ch_address, ch_options)
+    let s:channel = ch_open(s:ch_address, s:ch_options)
 
 endwhile
 
@@ -85,7 +82,7 @@ endwhile
 let s:count_ = 0
 while ch_status(s:channel) == "open"
     " Rust Plugin is doing work
-    if s:count_ >= max_work_time
+    if s:count_ >= s:max_work_time
         break
     endif
     let s:count_ += 1
@@ -96,6 +93,6 @@ endwhile
 "
 " This shouldn't be necessary with the new style.
 
-"if job_status(job) != "dead"
-    "call job_stop(job)
+"if job_status(s:job) != "dead"
+    "call job_stop(s:job)
 "endif
