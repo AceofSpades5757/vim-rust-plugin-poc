@@ -7,6 +7,9 @@
 "     Vim plugin written in Rust.
 "
 
+if exists("g:loaded_vim_rust_plugin")
+    finish
+endif
 let g:loaded_vim_rust_plugin = 1
 
 
